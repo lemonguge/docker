@@ -1,0 +1,26 @@
+version: '3'
+services:
+  web:
+    image: "lemonguge/docker-application:1.0"
+    container_name: dcap.main
+    depends_on:
+      - zookeeper
+      - redis
+    hostname: main
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    volumes:
+      - ../../share:/logs
+  zookeeper:
+    image: "zookeeper:latest"
+    container_name: dcap.zk
+    hostname: zookeeper
+    ports:
+      - "2181:2181"
+  redis:
+    image: "redis:latest"
+    container_name: dcap.redis
+    hostname: redis
+    ports:
+      - "6379:6379"

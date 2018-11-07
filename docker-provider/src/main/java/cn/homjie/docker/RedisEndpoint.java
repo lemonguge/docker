@@ -10,6 +10,7 @@ import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.boot.actuate.endpoint.annotation.Selector;
 import org.springframework.boot.actuate.endpoint.annotation.WriteOperation;
 import org.springframework.boot.actuate.endpoint.web.annotation.WebEndpoint;
+import org.springframework.data.redis.connection.DataType;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -37,7 +38,21 @@ public class RedisEndpoint {
 
     @ReadOperation
     public Response select(@Selector String name) {
-        return new Response(name, stringRedisTemplate.opsForValue().get(name));
+        DataType type = stringRedisTemplate.type(name);
+        switch (type) {
+            case STRING:
+                return new Response(name, stringRedisTemplate.opsForValue().get(name));
+            case LIST:
+                return new Response(name, stringRedisTemplate.opsForList().range(name, 0, -1));
+            case HASH:
+                return new Response(name, stringRedisTemplate.opsForHash().entries(name));
+            case SET:
+                return new Response(name, stringRedisTemplate.opsForSet().members(name));
+            case ZSET:
+                return new Response(name, stringRedisTemplate.opsForZSet().rangeWithScores(name, 0, -1));
+            default:
+                return new Response(name, null);
+        }
     }
 
     @DeleteOperation
@@ -55,9 +70,9 @@ public class RedisEndpoint {
     public static final class Response {
 
         private String key;
-        private String value;
+        private Object value;
 
-        public Response(String key, String value) {
+        public Response(String key, Object value) {
             this.key = key;
             this.value = value;
         }
@@ -66,7 +81,7 @@ public class RedisEndpoint {
             return key;
         }
 
-        public String getValue() {
+        public Object getValue() {
             return value;
         }
     }
