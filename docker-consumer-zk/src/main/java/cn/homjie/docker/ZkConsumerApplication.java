@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @ImportResource("classpath:consumer.xml")
 @SpringBootApplication
-public class ConsumerApplication {
+public class ZkConsumerApplication {
 
     @Autowired
     private HelloService helloService;
 
     public static void main(String[] args) {
-        SpringApplication.run(ConsumerApplication.class, args);
+        SpringApplication.run(ZkConsumerApplication.class, args);
     }
 
     @GetMapping("/hello/{name}")

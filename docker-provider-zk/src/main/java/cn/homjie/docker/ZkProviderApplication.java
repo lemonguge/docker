@@ -10,9 +10,9 @@ import org.springframework.context.annotation.ImportResource;
  */
 @SpringBootApplication
 @ImportResource("classpath:provider.xml")
-public class ProviderApplication {
+public class ZkProviderApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ProviderApplication.class, args);
+        SpringApplication.run(ZkProviderApplication.class, args);
     }
 }
