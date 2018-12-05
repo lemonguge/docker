@@ -1,6 +1,6 @@
 FROM openjdk:8
 
-ENV JAR_FILE=docker-provider/target/docker-provider-0.0.1-SNAPSHOT.jar
+ENV JAR_FILE=docker-provider-zk/target/docker-provider-zk-0.0.1-SNAPSHOT.jar
 
 COPY $JAR_FILE application.jar
 
