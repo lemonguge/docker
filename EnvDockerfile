@@ -1,0 +1,12 @@
+FROM openjdk:8
+
+ENV JAR_FILE=agent-1.0.0-SNAPSHOT.jar
+ENV HOST=
+ENV PORT=
+ENV PASSWORD=
+
+COPY $JAR_FILE agent.jar
+
+ENTRYPOINT ["sh", "-c", "java -jar /agent.jar $HOST $PORT $PASSWORD"]
+
+# docker run --link ha-redis:redis -e HOST=redis -e PORT=6379 -e PASSWORD=123456 lemonguge/lora-agent:1.7
